@@ -10,6 +10,95 @@
 
         }
 
+        public static (double, double) CalculateXAandYA(double f, double dpX, double xCI, double yCI, double Ax, double Ay, double Az)
+        {
+            double xA = (f / dpX) * (Ax / Az) + xCI;
+            double yA = (f / dpX) * (Ay / Az) + yCI;
+
+            return (xA, yA);
+        }
+
+        public static (double, double) CalculateXBandYB(double f, double dpX, double xCI, double yCI, double Bx, double By, double Bz)
+        {
+            double xB = (f / dpX) * (Bx / Bz) + xCI;
+            double yB = (f / dpX) * (By / Bz) + yCI;
+
+            return (xB, yB);
+        }
+
+        public static (double, double) CalculateTildeXAandTildeYA(double f, double dpX, double xCI, double yCI, double xA, double yA)
+        {
+            double tildeXA = (xA - xCI) * dpX / f;
+            double tildeYA = (yA - yCI) * dpX / f;
+
+            return (tildeXA, tildeYA);
+        }
+
+        public static (double, double) CalculateTildeXBandTildeYB(double f, double dpX, double xCI, double yCI, double xB, double yB)
+        {
+            double tildeXB = (xB - xCI) * dpX / f;
+            double tildeYB = (yB - yCI) * dpX / f;
+
+            return (tildeXB, tildeYB);
+        }
+
+        public static (double, double) CalculateTildeXAandTildeYA(double[] R1, double[] R2, double[] R3, double tx, double ty, double tz, double[] A)
+        {
+            double denominator = R3[0] * A[0] + R3[1] * A[1] + R3[2] * A[2] + tz;
+            double tildeXA = (R1[0] * A[0] + R1[1] * A[1] + R1[2] * A[2] + tx) / denominator;
+            double tildeYA = (R2[0] * A[0] + R2[1] * A[1] + R2[2] * A[2] + ty) / denominator;
+
+            return (tildeXA, tildeYA);
+        }
+
+        public static (double, double) CalculateTildeXBandTildeYB(double[] R1, double[] R2, double[] R3, double tx, double ty, double tz, double[] B)
+        {
+            double denominator = R3[0] * B[0] + R3[1] * B[1] + R3[2] * B[2] + tz;
+            double tildeXB = (R1[0] * B[0] + R1[1] * B[1] + R1[2] * B[2] + tx) / denominator;
+            double tildeYB = (R2[0] * B[0] + R2[1] * B[1] + R2[2] * B[2] + ty) / denominator;
+
+            return (tildeXB, tildeYB);
+        }
+
+        public static double CalculateTx(double Az, double tildeXA, double[] R1, double[] A)
+        {
+            double tx = Az * tildeXA - (R1[0] * A[0] + R1[1] * A[1] + R1[2] * A[2]);
+
+            return tx;
+        }
+        public static double CalculateTy(double Az, double tildeYA, double[] R2, double[] A)
+        {
+            double ty = Az * tildeYA - (R2[0] * A[0] + R2[1] * A[1] + R2[2] * A[2]);
+
+            return ty;
+        }
+        public static double CalculateTz(double Az, double[] R3, double[] A)
+        {
+            double tz = Az - (R3[0] * A[0] + R3[1] * A[1] + R3[2] * A[2]);
+
+            return tz;
+        }
+
+        public static double CalculateAz(double[] R1, double[] R3, double tildeXA,double tildeXB, double[] A, double[] B)
+        {
+            double numerator = (R1[0] - tildeXB * R3[0]) * (A[0] - B[0]) + (R1[1] - tildeXB * R3[1]) * (A[1] - B[1]) + (R1[2] - tildeXB * R3[2]) * (A[2] - B[2]);
+            double denominator = tildeXB - tildeXA;
+
+            double Az = numerator / denominator;
+
+            return Az;
+        }
+
+        public static double CalculateAlpha(double c, double M, double beta)
+        {
+            double alpha = Math.Acos(-c / M) + beta;
+
+            return alpha;
+        }
+
+
+
+
         public void calculatABC()
         {
             double x_A, x_B, y_A, y_B, g_u, g_v, g_w, g_x, g_y, g_z, A_u, A_v, B_u, B_v;
