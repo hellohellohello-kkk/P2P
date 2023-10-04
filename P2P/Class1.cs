@@ -1,4 +1,6 @@
-﻿namespace P2P
+﻿using System.Numerics;
+
+namespace P2P
 {
 
     public class Class1
@@ -42,41 +44,23 @@
             return (tildeXB, tildeYB);
         }
 
-        public static (double, double) CalculateTildeXAandTildeYA(double[] R1, double[] R2, double[] R3, double tx, double ty, double tz, double[] A)
+        public static (double, double) CalculateProjectionalCoordinatesFromCameraCoordinates(double[,] rotaiton, double tx, double ty, double tz, double[] A)
         {
-            double denominator = R3[0] * A[0] + R3[1] * A[1] + R3[2] * A[2] + tz;
-            double tildeXA = (R1[0] * A[0] + R1[1] * A[1] + R1[2] * A[2] + tx) / denominator;
-            double tildeYA = (R2[0] * A[0] + R2[1] * A[1] + R2[2] * A[2] + ty) / denominator;
+            double denominator = rotaiton[2,0] * A[0] + rotaiton[2, 1] * A[1] + rotaiton[2,2] * A[2] + tz;
+            double tildeXA = (rotaiton[0,0] * A[0] + rotaiton[0,1] * A[1] + rotaiton[0,2] * A[2] + tx) / denominator;
+            double tildeYA = (rotaiton[1,0] * A[0] + rotaiton[1,1] * A[1] + rotaiton[1,2] * A[2] + ty) / denominator;
 
             return (tildeXA, tildeYA);
         }
 
-        public static (double, double) CalculateTildeXBandTildeYB(double[] R1, double[] R2, double[] R3, double tx, double ty, double tz, double[] B)
+        public static double[] CalculateTranslationalVector(double Az, double tildeXA, double tildeYA, double[,] R, double[] A)
         {
-            double denominator = R3[0] * B[0] + R3[1] * B[1] + R3[2] * B[2] + tz;
-            double tildeXB = (R1[0] * B[0] + R1[1] * B[1] + R1[2] * B[2] + tx) / denominator;
-            double tildeYB = (R2[0] * B[0] + R2[1] * B[1] + R2[2] * B[2] + ty) / denominator;
+            double tx = Az * tildeXA - (R[0,0] * A[0] + R[0,1] * A[1] + R[0,2] * A[2]);
+            double ty = Az * tildeYA - (R[1,0] * A[0] + R[1,1] * A[1] + R[1,2] * A[2]);
+            double tz = Az - (R[2,0] * A[0] + R[2,1] * A[1] + R[2,2] * A[2]);
 
-            return (tildeXB, tildeYB);
-        }
-
-        public static double CalculateTx(double Az, double tildeXA, double[] R1, double[] A)
-        {
-            double tx = Az * tildeXA - (R1[0] * A[0] + R1[1] * A[1] + R1[2] * A[2]);
-
-            return tx;
-        }
-        public static double CalculateTy(double Az, double tildeYA, double[] R2, double[] A)
-        {
-            double ty = Az * tildeYA - (R2[0] * A[0] + R2[1] * A[1] + R2[2] * A[2]);
-
-            return ty;
-        }
-        public static double CalculateTz(double Az, double[] R3, double[] A)
-        {
-            double tz = Az - (R3[0] * A[0] + R3[1] * A[1] + R3[2] * A[2]);
-
-            return tz;
+            var translationalVector = new double[] { tx, ty, tz };
+            return translationalVector;
         }
 
         public static double CalculateAz(double[] R1, double[] R3, double tildeXA,double tildeXB, double[] A, double[] B)
