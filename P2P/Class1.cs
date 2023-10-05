@@ -12,36 +12,20 @@ namespace P2P
 
         }
 
-        public static (double, double) CalculateXAandYA(double f, double dpX, double xCI, double yCI, double Ax, double Ay, double Az)
+        public static (double, double) CalculateImageCoordinatesFromCameraCoordinates(double f, double dpX, double xC, double yC, double[] A)
         {
-            double xA = (f / dpX) * (Ax / Az) + xCI;
-            double yA = (f / dpX) * (Ay / Az) + yCI;
+            double xA = (f / dpX) * (A[0] / A[2]) + xC;
+            double yA = (f / dpX) * (A[1] / A[2]) + yC;
 
             return (xA, yA);
         }
 
-        public static (double, double) CalculateXBandYB(double f, double dpX, double xCI, double yCI, double Bx, double By, double Bz)
+        public static (double, double) CalculateProjectionalCoordinatesFromImageCoordinates(double f, double dpX, double xC, double yC, double xA, double yA)
         {
-            double xB = (f / dpX) * (Bx / Bz) + xCI;
-            double yB = (f / dpX) * (By / Bz) + yCI;
+            double xTilde = (xA - xC) * dpX / f;
+            double yTilde = (yA - yC) * dpX / f;
 
-            return (xB, yB);
-        }
-
-        public static (double, double) CalculateTildeXAandTildeYA(double f, double dpX, double xCI, double yCI, double xA, double yA)
-        {
-            double tildeXA = (xA - xCI) * dpX / f;
-            double tildeYA = (yA - yCI) * dpX / f;
-
-            return (tildeXA, tildeYA);
-        }
-
-        public static (double, double) CalculateTildeXBandTildeYB(double f, double dpX, double xCI, double yCI, double xB, double yB)
-        {
-            double tildeXB = (xB - xCI) * dpX / f;
-            double tildeYB = (yB - yCI) * dpX / f;
-
-            return (tildeXB, tildeYB);
+            return (xTilde, yTilde);
         }
 
         public static (double, double) CalculateProjectionalCoordinatesFromCameraCoordinates(double[,] rotaiton, double tx, double ty, double tz, double[] A)
@@ -63,17 +47,17 @@ namespace P2P
             return translationalVector;
         }
 
-        public static double CalculateAz(double[] R1, double[] R3, double tildeXA,double tildeXB, double[] A, double[] B)
+        public static double CalculateAz(double[] R1, double[] R3, double[,] R, double xATilde,double xBTilde, double[] A, double[] B)
         {
-            double numerator = (R1[0] - tildeXB * R3[0]) * (A[0] - B[0]) + (R1[1] - tildeXB * R3[1]) * (A[1] - B[1]) + (R1[2] - tildeXB * R3[2]) * (A[2] - B[2]);
-            double denominator = tildeXB - tildeXA;
+            double numerator = (R[0,0] - xBTilde * R[2,0]) * (A[0] - B[0]) + (R[0,1] - xBTilde * R[2,1]) * (A[1] - B[1]) + (R[0,2] - xBTilde * R[2,2]) * (A[2] - B[2]);
+            double denominator = xBTilde - xATilde;
 
             double Az = numerator / denominator;
 
             return Az;
         }
 
-        public static double CalculateAlpha(double c, double M, double beta)
+        public static double CalculateRotationAngle(double c, double M, double beta)
         {
             double alpha = Math.Acos(-c / M) + beta;
 
