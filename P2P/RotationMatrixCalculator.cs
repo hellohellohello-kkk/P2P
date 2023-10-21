@@ -2,23 +2,6 @@ using System.Numerics;
 
 namespace P2P;
 
-public class Angle
-{
-	private Angle(double degree)
-	{
-		Degree = degree;
-	}
-
-	public static Angle CreateFromDegree(double degree)
-	{
-		return new Angle(degree);
-	}
-
-	public double Degree { get; }
-
-	public double Radian => Degree / 180 * Math.PI;
-}
-
 public class RotationMatrixCalculator
 {
 	public Matrix4x4 GetRotationMatrixObjectToCertainRef(Angle angle, Vector3 gravity)
@@ -37,39 +20,6 @@ public class RotationMatrixCalculator
 			(gravity.X * FloatMath.Cos(angle.Radian) - gravity.Y * gravity.Z * FloatMath.Sin(angle.Radian)) /
 			denominator);
 
-		return Matrix4x4Extension.CreateFromThreeVector(gObj, mObj, nObj);
+		return Matrix4X4Extension.CreateFromThreeVector(gObj, mObj, nObj);
 	}
 }
-
-public class FloatMath
-{
-	public static float Sin(double value)
-	{
-		return (float)Math.Sin(value);
-	}
-	
-	public static float Cos(double value)
-	{
-		return (float)Math.Cos(value);
-	}
-
-	public static float Sqrt(double value)
-	{
-		return (float)Math.Sqrt(value);
-	}
-}
-
-public static class Matrix4x4Extension
-{
-	public static Matrix4x4 CreateFromThreeVector(Vector3 firstRow, Vector3 secondRow, Vector3 thirdRow)
-	{
-		return new Matrix4x4(
-			firstRow.X, firstRow.Y, firstRow.Z, 0, 
-			secondRow.X, secondRow.Y, secondRow.Z, 0,
-			thirdRow.X, thirdRow.Y, thirdRow.Z, 0, 
-			0, 0, 0, 1
-		);
-	}
-}
-
-
