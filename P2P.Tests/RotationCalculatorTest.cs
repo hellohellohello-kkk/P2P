@@ -8,8 +8,9 @@ public class RotationCalculatorTest
 	[Test]
 	public void RotationMatrixInnerProductTest()
 	{
+		var rotationMatrixCalculator = new RotationMatrixCalculator();
 		var actual =
-			new RotationMatrixCalculator().GetRotationMatrixObjectToCertainRef(Angle.CreateFromDegree(0),
+			rotationMatrixCalculator.GetRotationMatrixObjectToCertainRef(Angle.CreateFromDegree(0),
 				new Vector3(0, 0, 0));
 	
 		// Failed
