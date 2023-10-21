@@ -22,4 +22,21 @@ public class RotationMatrixCalculator
 
 		return Matrix4X4Extension.CreateFromThreeVector(gObj, mObj, nObj);
 	}
+	
+	public Matrix4x4 GetRotationCertainRefToCameraReferenceFrame(Vector3 gravity)
+	{
+		var gCam = new Vector3(gravity.X, gravity.Y, gravity.Z);
+
+		// powを使わないようにする
+		var denominator = FloatMath.Sqrt(Math.Pow(gravity.X, 2) + Math.Pow(gravity.Z, 2));
+
+		var mCam = new Vector3(gravity.Z / denominator, 0, -gravity.X / denominator);
+
+		var nCam = new Vector3(
+			-gravity.X * gravity.Y / denominator,
+			denominator,
+			-gravity.Y * gravity.Z / denominator);
+
+		return Matrix4X4Extension.CreateFromThreeVector(gCam, mCam, nCam);
+	}
 }
