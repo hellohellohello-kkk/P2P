@@ -42,7 +42,6 @@ public class RotationMatrixCalculator
 
 	private static float CalculateDenominator(Vector3 gravity)
 	{
-		// powを使わないようにする
-		return FloatMath.Sqrt(Math.Pow(gravity.X, 2) + Math.Pow(gravity.Z, 2));
+		return FloatMath.Sqrt(gravity.X*gravity.X+ gravity.Z*gravity.Z);
 	}
 }
