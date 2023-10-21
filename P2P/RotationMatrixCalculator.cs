@@ -7,8 +7,9 @@ public class RotationMatrixCalculator
 	public Matrix4x4 GetRotationMatrixObjectToCertainRef(Angle angle, Vector3 gravity)
 	{
 		var gObj = new Vector3(gravity.X, gravity.Y, gravity.Z );
-
-		var denominator = FloatMath.Sqrt(Math.Pow(gravity.X, 2) + Math.Pow(gravity.Z, 2));
+		
+		var denominator = CalculateDenominator(gravity);
+		
 		var m1 = new Vector3(gravity.Z / denominator, 0, -gravity.X / denominator);
 		var m2 = new Vector3(-gravity.X * gravity.Y / denominator, denominator, -gravity.Y * gravity.Z / denominator);
 		var mObj = m1 * FloatMath.Sin(angle.Radian) + m2 * FloatMath.Cos(angle.Radian);
@@ -27,8 +28,7 @@ public class RotationMatrixCalculator
 	{
 		var gCam = new Vector3(gravity.X, gravity.Y, gravity.Z);
 
-		// powを使わないようにする
-		var denominator = FloatMath.Sqrt(Math.Pow(gravity.X, 2) + Math.Pow(gravity.Z, 2));
+		var denominator = CalculateDenominator(gravity);
 
 		var mCam = new Vector3(gravity.Z / denominator, 0, -gravity.X / denominator);
 
@@ -38,5 +38,11 @@ public class RotationMatrixCalculator
 			-gravity.Y * gravity.Z / denominator);
 
 		return Matrix4X4Extension.CreateFromThreeVector(gCam, mCam, nCam);
+	}
+
+	private static float CalculateDenominator(Vector3 gravity)
+	{
+		// powを使わないようにする
+		return FloatMath.Sqrt(Math.Pow(gravity.X, 2) + Math.Pow(gravity.Z, 2));
 	}
 }
