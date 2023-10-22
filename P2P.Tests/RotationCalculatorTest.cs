@@ -6,11 +6,23 @@ namespace P2P.Tests;
 public class RotationCalculatorTest
 {
 	[Test]
-	public void RotationMatrixInnerProductTest()
+	public void RotationMatrixObjectGravityTest()
 	{
+		var rotationMatrixCalculator = new RotationMatrixCalculator();
 		var actual =
-			new RotationMatrixCalculator().GetRotationMatrixObjectToCertainRef(Angle.CreateFromDegree(0),
+			rotationMatrixCalculator.GetRotationMatrixObjectToCertainRef(Angle.CreateFromDegree(0),
 				new Vector3(0, 0, 0));
+	
+		// Failed
+		Assert.AreEqual(Matrix4x4.Identity, actual);
+	}
+	
+	[Test]
+	public void RotationMatrixCameraGravityTest()
+	{
+		var rotationMatrixCalculator = new RotationMatrixCalculator();
+		var actual =
+			rotationMatrixCalculator.GetRotationCertainRefToCameraReferenceFrame(new Vector3(0, 0, 0));
 	
 		// Failed
 		Assert.AreEqual(Matrix4x4.Identity, actual);
