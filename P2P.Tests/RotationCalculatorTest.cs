@@ -10,7 +10,7 @@ public class RotationCalculatorTest
 	{
 		var rotationMatrixCalculator = new RotationMatrixCalculator();
 		var actual =
-			rotationMatrixCalculator.GetRotationMatrixObjectToCertainRef(Angle.CreateFromDegree(0),
+			rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(Angle.CreateFromDegree(0),
 				new Vector3(0, 0, 0));
 	
 		// Failed

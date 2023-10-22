@@ -4,7 +4,7 @@ namespace P2P;
 
 public class RotationMatrixCalculator
 {
-	public Matrix4x4 GetRotationMatrixObjectToCertainRef(Angle angle, Vector3 gravity)
+	public Matrix4x4 GetRotationMatrixCertainRefToObjectReferenceFrame(Angle angle, Vector3 gravity)
 	{
 		var gObj = new Vector3(gravity.X, gravity.Y, gravity.Z );
 		
