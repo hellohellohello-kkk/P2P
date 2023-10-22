@@ -22,7 +22,7 @@ public class RotationCalculatorTest
 	{
 		var rotationMatrixCalculator = new RotationMatrixCalculator();
 		var actual =
-			rotationMatrixCalculator.GetRotationCertainRefToCameraReferenceFrame(new Vector3(0, 0, 0));
+			rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(new Vector3(0, 0, 0));
 	
 		// Failed
 		Assert.AreEqual(Matrix4x4.Identity, actual);
