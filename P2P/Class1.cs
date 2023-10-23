@@ -12,20 +12,20 @@ namespace P2P
             _rotationMatrixCalculator = new RotationMatrixCalculator();
         }
 
-        public static (double, double) CalculateImageCoordinatesFromCameraCoordinates(double f, double dpX, double xC, double yC, double[] A)
+        public static Vector2 CalculateImageCoordinatesFromCameraCoordinates(float f, float dpX, Vector2 imageCenter, Vector3 Poisition)
         {
-            double xA = (f / dpX) * (A[0] / A[2]) + xC;
-            double yA = (f / dpX) * (A[1] / A[2]) + yC;
+            var xA = (f / dpX) * (Poisition.X / Poisition.Z) + imageCenter.X;
+            var yA = (f / dpX) * (Poisition.Y / Poisition.Z) + imageCenter.Y;
 
-            return (xA, yA);
+            return new Vector2(xA, yA);
         }
 
-        public static (double, double) CalculateProjectionalCoordinatesFromImageCoordinates(double f, double dpX, double xC, double yC, double xA, double yA)
+        public static Vector2 CalculateProjectionalCoordinatesFromImageCoordinates(float f, float dpX, Vector2 imageCenter, Vector2 imagePosition)
         {
-            double xTilde = (xA - xC) * dpX / f;
-            double yTilde = (yA - yC) * dpX / f;
+            var xTilde = (imagePosition.X - imageCenter.X) * dpX / f;
+            var yTilde = (imagePosition.Y - imageCenter.Y) * dpX / f;
 
-            return (xTilde, yTilde);
+            return new Vector2(xTilde, yTilde);
         }
 
         public static (double, double) CalculateProjectionalCoordinatesFromCameraCoordinates(double[,] rotaiton, double tx, double ty, double tz, double[] A)

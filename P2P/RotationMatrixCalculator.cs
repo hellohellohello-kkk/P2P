@@ -45,7 +45,7 @@ public class RotationMatrixCalculator
 		return RotationMatrixCertainRefToCameraReferenceFrame * Matrix4x4.Transpose(RotationMatrixCertainRefToObjectReferenceFrame);
 	}
 
-	private static float CalculateDenominator(Vector3 gravity)
+	private float CalculateDenominator(Vector3 gravity)
 	{
 		return FloatMath.Sqrt(gravity.X*gravity.X+ gravity.Z*gravity.Z);
 	}

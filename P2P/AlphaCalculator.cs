@@ -12,8 +12,15 @@ public class AlphaCalculator
 		_markerACoordinateAtObjectReferenceFrame = markerACoordinateAtObjectReferenceFrame;
 		_markerBCoordinateAtObjectReferenceFrame = markerBCoordinateAtObjectReferenceFrame;
 	}
-	
-	public double CalculateAlpha(Vector2 markerAPosition, Vector2 markerBPosition, Vector3 gravityObject, Vector3 gravityCamera)
+    public AlphaCalculator(Vector4 markerACoordinateAtObjectReferenceFrame, Vector4 markerBCoordinateAtObjectReferenceFrame)
+    {
+        _markerACoordinateAtObjectReferenceFrame = new Vector3(markerACoordinateAtObjectReferenceFrame.X,
+            markerACoordinateAtObjectReferenceFrame.Y, markerACoordinateAtObjectReferenceFrame.Z);
+        _markerBCoordinateAtObjectReferenceFrame = new Vector3(markerBCoordinateAtObjectReferenceFrame.X,
+            markerBCoordinateAtObjectReferenceFrame.Y, markerBCoordinateAtObjectReferenceFrame.Z);
+    }
+
+    public double CalculateAlpha(Vector2 markerAPosition, Vector2 markerBPosition, Vector3 gravityObject, Vector3 gravityCamera)
 	{
 		var a = CalculateParameterA(markerAPosition, markerBPosition, gravityObject, gravityCamera);
 		var b = CalculateParameterB(markerAPosition, markerBPosition, gravityObject, gravityCamera);
