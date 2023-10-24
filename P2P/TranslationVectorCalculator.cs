@@ -30,7 +30,7 @@ public class TranslationVectorCalculator
     }
     public static float AzCalculator(Vector2 markerANormalizedImagePosition, Vector2 markerBNormalizedImagePosition, Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame, Matrix4x4 RotationMatrix)
     {
-        var numerator = Vector3.Dot( GetColumn1(RotationMatrix) - markerBNormalizedImagePosition.X*GetColumn3(RotationMatrix) , markerACoordinateAtObjectReferenceFrame-markerBCoordinateAtObjectReferenceFrame );
+        var numerator = Vector3.Dot( GetColumn1(RotationMatrix) - markerBNormalizedImagePosition.X*GetColumn3(RotationMatrix) , markerBCoordinateAtObjectReferenceFrame-markerACoordinateAtObjectReferenceFrame );
         var denominator = markerBNormalizedImagePosition.X - markerANormalizedImagePosition.X;
 
         return numerator / denominator;

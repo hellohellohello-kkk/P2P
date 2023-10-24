@@ -21,6 +21,8 @@ public class AlphaCalculatorTest
     {
         var objectAInObjectReferenceFrame = new Vector4(100, 100, 0, 1);
         var objectBInObjectReferenceFrame = new Vector4(-100, -100, 0, 1);
+        var objectAInObjectReferenceFrameVector3 = new Vector3(100, 100, 0);
+        var objectBInObjectReferenceFrameVector3 = new Vector3(-100, -100, 0);
 
         var gravityVectorInCameraReferenceFrame = new Vector3(0, 0, 1);
         var gravityVectorInObjectReferenceFrame = new Vector3(0, 0, 1);
@@ -63,7 +65,7 @@ public class AlphaCalculatorTest
 
         Console.WriteLine(actualMatrix);
 
-        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, expectedObjectAInCameraReferenceFrame, expectedObjectBInCameraReferenceFrame, actualMatrix);
+        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrameVector3, objectBInObjectReferenceFrameVector3, actualMatrix);
         Console.WriteLine(translation.X +","+translation.Y+","+translation.Z );
     }
 }
