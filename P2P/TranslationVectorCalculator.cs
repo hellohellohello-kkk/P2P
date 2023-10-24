@@ -5,7 +5,7 @@ namespace P2P;
 
 public class TranslationVectorCalculator
 {
-    public Vector3 GetTranslationVector(Vector2 markerANormalizedImagePosition, Vector2 markerBNormalizedImagePosition, Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame, Matrix4x4 RotationMatrix)
+    public static Vector3 GetTranslationVector(Vector2 markerANormalizedImagePosition, Vector2 markerBNormalizedImagePosition, Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame, Matrix4x4 RotationMatrix)
     {
         var Az = AzCalculator(markerANormalizedImagePosition, markerBNormalizedImagePosition, markerACoordinateAtObjectReferenceFrame, markerBCoordinateAtObjectReferenceFrame, RotationMatrix);
         var tx = Az * markerANormalizedImagePosition.X - Vector3.Dot(GetColumn1(RotationMatrix), markerACoordinateAtObjectReferenceFrame);
@@ -28,10 +28,10 @@ public class TranslationVectorCalculator
     {
         return new Vector3(matrix.M13, matrix.M23, matrix.M33);
     }
-    public  float AzCalculator(Vector2 markerANormalizedImagePosition, Vector2 markerBNormalizedImagePosition, Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame, Matrix4x4 RotationMatrix)
+    public static float AzCalculator(Vector2 markerANormalizedImagePosition, Vector2 markerBNormalizedImagePosition, Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame, Matrix4x4 RotationMatrix)
     {
         var numerator = Vector3.Dot( GetColumn1(RotationMatrix) - markerBNormalizedImagePosition.X*GetColumn3(RotationMatrix) , markerACoordinateAtObjectReferenceFrame-markerBCoordinateAtObjectReferenceFrame );
-        var denominator = markerBNormalizedImagePosition.X - markerANormalizedImagePosition.Y;
+        var denominator = markerBNormalizedImagePosition.X - markerANormalizedImagePosition.X;
 
         return numerator / denominator;
     }
