@@ -19,8 +19,8 @@ public class AlphaCalculatorTest
     [Test]
     public void P2pTest()
     {
-        var objectAInObjectReferenceFrame = new Vector4(100, 100, 100, 1);
-        var objectBInObjectReferenceFrame = new Vector4(0, 0, 0, 1);
+        var objectAInObjectReferenceFrame = new Vector4(100, 100, 0, 1);
+        var objectBInObjectReferenceFrame = new Vector4(-100, -100, 0, 1);
 
         var gravityVectorInCameraReferenceFrame = new Vector3(0, 0, 1);
         var gravityVectorInObjectReferenceFrame = new Vector3(0, 0, 1);
@@ -28,9 +28,9 @@ public class AlphaCalculatorTest
         //âÒì]
         var expectedMatrix = Matrix4x4.Identity;
         //ï¿êi
-        expectedMatrix.M41 = 10;
-        expectedMatrix.M42 = 20;
-        expectedMatrix.M43 = 30;
+        expectedMatrix.M41 = 0;
+        expectedMatrix.M42 = 0;
+        expectedMatrix.M43 = 5000;
 
         var objectAVector4 = Vector4.Transform(objectAInObjectReferenceFrame, expectedMatrix);
         var expectedObjectAInCameraReferenceFrame = new Vector3(objectAVector4.X, objectAVector4.Y, objectAVector4.Z);
@@ -54,12 +54,16 @@ public class AlphaCalculatorTest
 
         var alphaDegree = Angle.CreateFromDegree(alpha * 180.0 / Math.PI);
 
-        Console.WriteLine(alphaDegree);
+        Console.WriteLine(alphaDegree.Degree);
 
         var rotationMatrixCalculator = new RotationMatrixCalculator();
-        var actualMatrix = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alphaDegree, gravityVectorInCameraReferenceFrame);
+        var matrix1 = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alphaDegree, gravityVectorInObjectReferenceFrame);
+        var matrix2 = rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(gravityVectorInCameraReferenceFrame);
+        var actualMatrix = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(matrix2, matrix1);
 
         Console.WriteLine(actualMatrix);
 
+        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, expectedObjectAInCameraReferenceFrame, expectedObjectBInCameraReferenceFrame, actualMatrix);
+        Console.WriteLine(translation.X +","+translation.Y+","+translation.Z );
     }
 }
