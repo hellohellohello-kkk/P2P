@@ -9,7 +9,7 @@ public class AlphaCalculatorTest
 	public void ParameterATest()
 	{
 		var alphaCalculator = new AlphaCalculator(Vector3.One, Vector3.Zero);
-		var alpha = alphaCalculator.CalculateAlpha(new Vector2(0.0f, 0.0f), new Vector2(0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f));
+		var alpha = alphaCalculator.CalculateAlpha(new Vector2(0.0f, 0.0f), new Vector2(0.0f, 0.0f), new Vector4(0.0f, 0.0f, 0.0f, 0.0f), new Vector4(0.0f, 0.0f, 0.0f, 0.0f));
 	
 		//Failed
 		Assert.AreEqual(0, alpha);
@@ -19,35 +19,36 @@ public class AlphaCalculatorTest
     [Test]
     public void P2pTest()
     {
+        //定数設定
+        var f = 50; //mm
+        var dpx = 0.00345f; //mm/pix
+        var imageCenter = new Vector2(1024, 1024);
+
+        //正解となる外部Pを設定(回転)
+        var expectedMatrix = Matrix4x4.CreateRotationX(MathF.PI/4);
+        
+        //オブジェクト
         var objectAInObjectReferenceFrame = new Vector4(100, 100, 0, 1);
         var objectBInObjectReferenceFrame = new Vector4(-100, -100, 0, 1);
-        var objectAInObjectReferenceFrameVector3 = new Vector3(100, 100, 0);
-        var objectBInObjectReferenceFrameVector3 = new Vector3(-100, -100, 0);
 
-        var gravityVectorInCameraReferenceFrame = new Vector3(0, 0, 1);
-        var gravityVectorInObjectReferenceFrame = new Vector3(0, 0, 1);
+        //重力方向
+        var gravityVectorInObjectReferenceFrame = new Vector4(0, 0, 1, 1);
+        var gravityVectorInCameraReferenceFrame = Vector4.Transform(gravityVectorInObjectReferenceFrame, expectedMatrix);
 
-        //回転
-        var expectedMatrix = Matrix4x4.Identity;
-        //並進
+        //正解となる外部Pを設定（並進）
         expectedMatrix.M41 = 0;
         expectedMatrix.M42 = 0;
         expectedMatrix.M43 = 5000;
 
-        var objectAVector4 = Vector4.Transform(objectAInObjectReferenceFrame, expectedMatrix);
-        var expectedObjectAInCameraReferenceFrame = new Vector3(objectAVector4.X, objectAVector4.Y, objectAVector4.Z);
+        var objectA = Vector4.Transform(objectAInObjectReferenceFrame, expectedMatrix);
+        var objectB = Vector4.Transform(objectBInObjectReferenceFrame, expectedMatrix);
 
-        var objectBVector4 = Vector4.Transform(objectBInObjectReferenceFrame, expectedMatrix);
-        var expectedObjectBInCameraReferenceFrame = new Vector3(objectBVector4.X, objectBVector4.Y, objectBVector4.Z);
+        
+        var imagePositionA = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectA);
+        var imagePositionB = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectB);
 
-        var f = 50; //mm
-        var dpx = 0.00345f; //mm/pix
-        var imageCenter = new Vector2(1024, 1024);
-        var imagePositionA = Class1.CalculateImageCoordinatesFromCameraCoordinates(f, dpx, imageCenter, expectedObjectAInCameraReferenceFrame);
-        var imagePositionB = Class1.CalculateImageCoordinatesFromCameraCoordinates(f, dpx, imageCenter, expectedObjectBInCameraReferenceFrame);
-
-        var projectedImagePositionA = Class1.CalculateProjectionalCoordinatesFromImageCoordinates(f, dpx, imageCenter, imagePositionA);
-        var projectedImagePositionB = Class1.CalculateProjectionalCoordinatesFromImageCoordinates(f, dpx, imageCenter, imagePositionB);
+        var projectedImagePositionA = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionA);
+        var projectedImagePositionB = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionB);
 
 
         var calculator = new AlphaCalculator(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame);
@@ -65,7 +66,7 @@ public class AlphaCalculatorTest
 
         Console.WriteLine(actualMatrix);
 
-        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrameVector3, objectBInObjectReferenceFrameVector3, actualMatrix);
+        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, actualMatrix);
         Console.WriteLine(translation.X +","+translation.Y+","+translation.Z );
     }
 }

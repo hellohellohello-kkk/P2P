@@ -4,7 +4,7 @@ namespace P2P;
 
 public class RotationMatrixCalculator
 {
-	public Matrix4x4 GetRotationMatrixCertainRefToObjectReferenceFrame(Angle angle, Vector3 gravity)
+	public Matrix4x4 GetRotationMatrixCertainRefToObjectReferenceFrame(Angle angle, Vector4 gravity)
 	{
 		var gObj = new Vector3(gravity.X, gravity.Y, gravity.Z );
 		
@@ -24,7 +24,7 @@ public class RotationMatrixCalculator
 		return Matrix4X4Extension.CreateFromThreeVector(gObj, mObj, nObj);
 	}
 	
-	public Matrix4x4 GetRotationMatrixCertainRefToCameraReferenceFrame(Vector3 gravity)
+	public Matrix4x4 GetRotationMatrixCertainRefToCameraReferenceFrame(Vector4 gravity)
 	{
 		var gCam = new Vector3(gravity.X, gravity.Y, gravity.Z);
 
@@ -45,7 +45,7 @@ public class RotationMatrixCalculator
 		return RotationMatrixCertainRefToCameraReferenceFrame * Matrix4x4.Transpose(RotationMatrixCertainRefToObjectReferenceFrame);
 	}
 
-	private float CalculateDenominator(Vector3 gravity)
+	private float CalculateDenominator(Vector4 gravity)
 	{
 		return FloatMath.Sqrt(gravity.X*gravity.X+ gravity.Z*gravity.Z);
 	}
