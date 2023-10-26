@@ -101,14 +101,14 @@ public class AlphaCalculator
 	    var xDiff = markerAPosition.X - markerBPosition.X;
         var yDiff = markerAPosition.Y - markerBPosition.Y;
 
-        var c = Math.Sqrt(Vector4Dot(gravityObject, gravityObject) * Vector4Dot(gravityCamera, gravityCamera)) / xDiff *
+        var c = Math.Sqrt((gravityObject.X * gravityObject.X + gravityObject.Z * gravityObject.Z ) *( gravityCamera.X * gravityCamera.X + gravityCamera.Z * gravityCamera.Z)) / xDiff *
                 (gravityObject.X * (-_markerBCoordinateAtObjectReferenceFrame.X * gravityCamera.X +
                                     _markerBCoordinateAtObjectReferenceFrame.X * markerBPosition.X * gravityCamera.Z +
                                     _markerACoordinateAtObjectReferenceFrame.X * (gravityCamera.X - markerAPosition.X * gravityCamera.Z)) +
                  gravityObject.Y * (-_markerBCoordinateAtObjectReferenceFrame.Y * gravityCamera.X +
                                     _markerBCoordinateAtObjectReferenceFrame.Y * markerBPosition.X * gravityCamera.Z +
                                     _markerACoordinateAtObjectReferenceFrame.Y * (gravityCamera.X - markerAPosition.X * gravityCamera.Z))) -
-                Math.Sqrt(Vector4Dot(gravityObject, gravityObject) * Vector4Dot(gravityCamera, gravityCamera)) / yDiff *
+                Math.Sqrt((gravityObject.X * gravityObject.X + gravityObject.Z * gravityObject.Z) * (gravityCamera.X * gravityCamera.X + gravityCamera.Z * gravityCamera.Z)) / yDiff *
                 (gravityObject.X * (-_markerBCoordinateAtObjectReferenceFrame.X * gravityCamera.Y +
                                     _markerBCoordinateAtObjectReferenceFrame.X * markerBPosition.Y * gravityCamera.Z +
                                     _markerACoordinateAtObjectReferenceFrame.X * (gravityCamera.Y - markerAPosition.Y * gravityCamera.Z)) +
