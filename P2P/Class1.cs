@@ -12,22 +12,6 @@ namespace P2P
             _rotationMatrixCalculator = new RotationMatrixCalculator();
         }
 
-        public static (double, double) CalculateImageCoordinatesFromCameraCoordinates(double f, double dpX, double xC, double yC, double[] A)
-        {
-            double xA = (f / dpX) * (A[0] / A[2]) + xC;
-            double yA = (f / dpX) * (A[1] / A[2]) + yC;
-
-            return (xA, yA);
-        }
-
-        public static (double, double) CalculateProjectionalCoordinatesFromImageCoordinates(double f, double dpX, double xC, double yC, double xA, double yA)
-        {
-            double xTilde = (xA - xC) * dpX / f;
-            double yTilde = (yA - yC) * dpX / f;
-
-            return (xTilde, yTilde);
-        }
-
         public static (double, double) CalculateProjectionalCoordinatesFromCameraCoordinates(double[,] rotaiton, double tx, double ty, double tz, double[] A)
         {
             double denominator = rotaiton[2,0] * A[0] + rotaiton[2, 1] * A[1] + rotaiton[2,2] * A[2] + tz;
