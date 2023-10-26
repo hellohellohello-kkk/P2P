@@ -40,6 +40,7 @@ public class AlphaCalculator
 		var xDiff = markerAPosition.X - markerBPosition.X;
 		var yDiff = markerAPosition.Y - markerBPosition.Y;
 
+        // 計算式が合っているか再度確認する
 		var a = 1 / xDiff * ((gravityObject.X*gravityObject.X + gravityObject.Y*gravityObject.Y) * gravityCamera.Y * (-_markerACoordinateAtObjectReferenceFrame.Y * gravityCamera.X + _markerBCoordinateAtObjectReferenceFrame.Y * gravityCamera.X + _markerACoordinateAtObjectReferenceFrame.Y * markerAPosition.X * gravityCamera.Z - 
 		                                                                 _markerBCoordinateAtObjectReferenceFrame.Y * markerBPosition.X * gravityCamera.Z) +
 		                     _markerACoordinateAtObjectReferenceFrame.X * (gravityObject.Z * (gravityCamera.X * markerAPosition.X + gravityCamera.Z) +
