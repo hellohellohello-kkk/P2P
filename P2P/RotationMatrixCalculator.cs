@@ -42,7 +42,7 @@ public class RotationMatrixCalculator
 
 	public Matrix4x4 GetRotationObjectReferenceFrameToCameraReferenceFrame(Matrix4x4 RotationMatrixCertainRefToCameraReferenceFrame, Matrix4x4 RotationMatrixCertainRefToObjectReferenceFrame)
 	{
-		return RotationMatrixCertainRefToCameraReferenceFrame * Matrix4x4.Transpose(RotationMatrixCertainRefToObjectReferenceFrame);
+		return Matrix4x4.Transpose(RotationMatrixCertainRefToCameraReferenceFrame) * RotationMatrixCertainRefToObjectReferenceFrame;
 	}
 
 	private float CalculateDenominator(Vector4 gravity)

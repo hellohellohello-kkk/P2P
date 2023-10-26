@@ -33,7 +33,7 @@ public class AlphaCalculatorTest
 
         //重力方向
         var gravityVectorInObjectReferenceFrame = new Vector4(0, 0, 1, 1);
-        var gravityVectorInCameraReferenceFrame = Vector4.Transform(gravityVectorInObjectReferenceFrame, expectedMatrix);
+        var gravityVectorInCameraReferenceFrame = Vector4.Transform(gravityVectorInObjectReferenceFrame, Matrix4x4.Transpose(expectedMatrix));
 
         //正解となる外部Pを設定（並進）
         expectedMatrix.M41 = 0;
