@@ -64,8 +64,8 @@ public class AlphaCalculator
         var yDiff = markerAPosition.Y - markerBPosition.Y;
 
         var b = 1 / xDiff * (gravityObject.X * gravityObject.Y * (-_markerACoordinateAtObjectReferenceFrame.X * (gravityCamera.X * markerAPosition.X + gravityCamera.Z) + 
-                                                                  _markerBCoordinateAtObjectReferenceFrame.X * (gravityCamera.X * markerBPosition.X + gravityCamera.Z)) +
-                             Vector4Dot(gravityObject, gravityObject) * (_markerACoordinateAtObjectReferenceFrame.Y * (gravityCamera.X * markerAPosition.X + gravityCamera.Z) - 
+                                                                  _markerBCoordinateAtObjectReferenceFrame.X * (gravityCamera.X * markerBPosition.Y + gravityCamera.Z)) +
+                             gravityObject.X * gravityObject.X * (_markerACoordinateAtObjectReferenceFrame.Y * (gravityCamera.X * markerAPosition.X + gravityCamera.Z) - 
                                                                           _markerBCoordinateAtObjectReferenceFrame.Y * (gravityCamera.X * markerBPosition.X + gravityCamera.Z) +
                                                                           gravityObject.Z * gravityCamera.Y * (_markerACoordinateAtObjectReferenceFrame.X * gravityCamera.X - 
 	                                                                          _markerBCoordinateAtObjectReferenceFrame.X * gravityCamera.X - 
@@ -79,7 +79,7 @@ public class AlphaCalculator
                              1 / yDiff *
                              (gravityObject.X * gravityObject.Y * gravityCamera.X * (-_markerACoordinateAtObjectReferenceFrame.X * markerAPosition.Y + 
                                                                                      _markerBCoordinateAtObjectReferenceFrame.X * markerBPosition.Y) +
-                              Vector4Dot(gravityObject, gravityObject) * (gravityCamera.X * (_markerACoordinateAtObjectReferenceFrame.Y * markerAPosition.Y - 
+                              gravityObject.X * gravityObject.X * (gravityCamera.X * (_markerACoordinateAtObjectReferenceFrame.Y * markerAPosition.Y - 
 	                                                                           _markerBCoordinateAtObjectReferenceFrame.Y * markerBPosition.Y) +
                                                                            _markerBCoordinateAtObjectReferenceFrame.X * gravityObject.Z * 
                                                                            (gravityCamera.X * gravityCamera.X + gravityCamera.Y * markerBPosition.Y * gravityCamera.Z + 
