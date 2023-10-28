@@ -1,4 +1,5 @@
 using System.Numerics;
+using KellermanSoftware.CompareNetObjects;
 
 namespace P2P.Tests;
 
@@ -43,7 +44,6 @@ public class AlphaCalculatorTest
         var objectA = Vector4.Transform(objectAInObjectReferenceFrame, expectedMatrix);
         var objectB = Vector4.Transform(objectBInObjectReferenceFrame, expectedMatrix);
 
-        
         var imagePositionA = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectA);
         var imagePositionB = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectB);
 
@@ -65,6 +65,10 @@ public class AlphaCalculatorTest
         var actualMatrix = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(matrix2, matrix1);
 
         Console.WriteLine(actualMatrix);
+        Console.WriteLine(expectedMatrix);
+        var comparisonResult = new CompareLogic(){Config = new ComparisonConfig(){DoublePrecision = 0.001}}.Compare(expectedMatrix, actualMatrix);
+        Assert.IsTrue(comparisonResult.AreEqual);
+
 
         var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, actualMatrix);
         Console.WriteLine(translation.X +","+translation.Y+","+translation.Z );
