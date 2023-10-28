@@ -97,10 +97,12 @@ public class AlphaCalculator
 	    var yB = b.Y;
 	    var yDiff = yA - yB;
 
-        var c = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W ) * ( gCam.X * gCam.X + gCam.Z * gCam.Z)) / xDiff * (gObj.U * (-_largeB.U * gCam.X + _largeB.U * xB * gCam.Z + _largeA.U * (gCam.X - 
-		                xA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.X + _largeB.V * xB * gCam.Z + _largeA.V * (gCam.X - xA * gCam.Z))) -
-                Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / yDiff * (gObj.U * (-_largeB.U * gCam.Y + _largeB.U * yB * gCam.Z +
-		                _largeA.U * (gCam.Y - yA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.Y + _largeB.V * yB * gCam.Z + _largeA.V * (gCam.Y - yA * gCam.Z)));
+	    var firstCoefficient = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W ) * ( gCam.X * gCam.X + gCam.Z * gCam.Z)) / xDiff;
+	    var secondCoefficient = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / yDiff;
+	    var c = firstCoefficient * (gObj.U * (-_largeB.U * gCam.X + _largeB.U * xB * gCam.Z + _largeA.U * (gCam.X - 
+		            xA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.X + _largeB.V * xB * gCam.Z + _largeA.V * (gCam.X - xA * gCam.Z))) -
+	            secondCoefficient * (gObj.U * (-_largeB.U * gCam.Y + _largeB.U * yB * gCam.Z + 
+	                _largeA.U * (gCam.Y - yA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.Y + _largeB.V * yB * gCam.Z + _largeA.V * (gCam.Y - yA * gCam.Z)));
 
         return c;
     }
