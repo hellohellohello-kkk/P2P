@@ -54,18 +54,12 @@ public class AlphaCalculator
 		var yDiff = yA - yB;
 		
 		var returnValue = 1 / xDiff * ((gObj.U*gObj.U + gObj.V*gObj.V) * gCam.Y * (-_largeA.V * gCam.X + _largeB.V * gCam.X + _largeA.V * xA * gCam.Z - 
-		                                                                      _largeB.V * xB * gCam.Z) +
-		                          _largeA.U * (gObj.W * (gCam.X * xA + gCam.Z) +
-			                          gObj.U * gObj.V * gCam.Y * (gCam.X - xA * gCam.Z)) -
+			                               _largeB.V * xB * gCam.Z) + _largeA.U * (gObj.W * (gCam.X * xA + gCam.Z) + gObj.U * gObj.V * gCam.Y * (gCam.X - xA * gCam.Z)) -
 		                          _largeB.U * (gObj.W * (gCam.X * xB + gCam.Z) + gObj.U* gObj.V * gCam.Y * (gCam.X - xB * gCam.Z))) - 
-		                     1 / yDiff *
-		                     (gObj.W * (gCam.X * (_largeA.U * yA - _largeB.U * yB) -
-		                                         _largeB.V * gObj.W * (gCam.X * gCam.X + gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z) +
-		                                         _largeA.V * gObj.W * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yA + gCam.Z))) +
-		                      gObj.U * gObj.V * (-_largeA.U * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yA + gCam.Z)) +
-		                                                           _largeB.V * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yB + gCam.Z))) +
-		                      gObj.U*gObj.U * (_largeA.V * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yA + gCam.Z)) -
-		                                                         _largeB.V * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yB + gCam.Z))));
+		                     1 / yDiff * (gObj.W * (gCam.X * (_largeA.U * yA - _largeB.U * yB) - _largeB.V * gObj.W * (gCam.X * gCam.X + 
+			                                            gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z) + _largeA.V * gObj.W * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yA + gCam.Z))) + gObj.U * gObj.V * (-_largeA.U * (gCam.X * gCam.X + 
+				                                  gCam.Z * (gCam.Y * yA + gCam.Z)) + _largeB.V * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yB + gCam.Z))) + gObj.U*gObj.U * (_largeA.V * (gCam.X * gCam.X + 
+				                     gCam.Z * (gCam.Y * yA + gCam.Z)) - _largeB.V * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yB + gCam.Z))));
 
 		return returnValue;
 	}
@@ -80,58 +74,33 @@ public class AlphaCalculator
         var yB = b.Y;
         var yDiff = yA - yB;
 
-        var returnValue = 1 / xDiff * (gObj.U * gObj.V * (-_largeA.U * (gCam.X * a.X + gCam.Z) + 
-                                                                  _largeB.U * (gCam.X * b.Y + gCam.Z)) +
-                             gObj.U * gObj.U * (_largeA.V * (gCam.X * a.X + gCam.Z) - 
-                                                                          _largeB.V * (gCam.X * b.X + gCam.Z) +
-                                                                          gObj.W * gCam.Y * (_largeA.U * gCam.X - 
-	                                                                          _largeB.U * gCam.X - 
-	                                                                          _largeA.U * a.X * gCam.Z + 
-	                                                                          _largeB.U * b.X * gCam.Z)) +
-                             gObj.W * (_largeA.V * gObj.W * (gCam.X * a.X + gCam.Z) - 
-                                                _largeB.V * gObj.W * (gCam.X * b.X + gCam.Z) +
-                                                (gObj.V * gObj.V + gObj.W * gObj.W) * gCam.Y *
-                                                (-_largeB.U * gCam.X + _largeB.U * b.X * gCam.Z + 
-                                                 _largeA.U * (gCam.X - a.X * gCam.Z)))) -
-                             1 / yDiff *
-                             (gObj.U * gObj.V * gCam.X * (-_largeA.U * a.Y + 
-                                                                                     _largeB.U * b.Y) +
-                              gObj.U * gObj.U * (gCam.X * (_largeA.V * a.Y - 
-	                                                                           _largeB.V * b.Y) +
-                                                                           _largeB.U * gObj.W * 
-                                                                           (gCam.X * gCam.X + gCam.Y * b.Y * gCam.Z + 
-                                                                            gCam.Z * gCam.Z) -
-                                                                           _largeA.U * 
-                                                                           (gObj.V * gObj.V + gObj.W * gObj.W) *
-                                                                           (gCam.X * gCam.X + gCam.Y * a.Y * gCam.Z + 
-                                                                            gCam.Z * gCam.Z) + 
-                                                                           _largeB.U *
-                                                                           (gObj.V * gObj.V + gObj.W * gObj.W) *
-                                                                           (gCam.X * gCam.X + gCam.Y * b.Y * gCam.Z + 
-                                                                            gCam.Z * gCam.Z)));
+        //todo まちがっている
+        var returnValue = 1 / xDiff * (gObj.U * gObj.V * (-_largeA.U * (gCam.X * a.X + gCam.Z) + _largeB.U * (gCam.X * b.Y + gCam.Z)) +
+                             gObj.U * gObj.U * (_largeA.V * (gCam.X * a.X + gCam.Z) - _largeB.V * (gCam.X * xB + gCam.Z) + gObj.W * gCam.Y * (_largeA.U * gCam.X - _largeB.U * gCam.X - 
+	                             _largeA.U * a.X * gCam.Z + _largeB.U * xB * gCam.Z)) + gObj.W * (_largeA.V * gObj.W * (gCam.X * xA+ gCam.Z) - 
+	                             _largeB.V * gObj.W * (gCam.X * xB + gCam.Z) + (gObj.V * gObj.V + gObj.W * gObj.W) * gCam.Y * (-_largeB.U * gCam.X + _largeB.U * xB * gCam.Z + 
+		                             _largeA.U * (gCam.X - xA * gCam.Z)))) - 1 / yDiff * (gObj.U * gObj.V * gCam.X * (-_largeA.U * yA + _largeB.U * yB) +
+                              gObj.U * gObj.U * (gCam.X * (_largeA.V * a.Y - _largeB.V * yB) + _largeB.U * gObj.W * (gCam.X * gCam.X + gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z) - 
+                                                 _largeA.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Y * a.Y * gCam.Z + gCam.Z * gCam.Z) + _largeB.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + 
+	                                                 gCam.Y * b.Y * gCam.Z + gCam.Z * gCam.Z)));
 
         return returnValue;
     }
 
 	private double CalculateParameterC(ImagePlanePoint a, ImagePlanePoint b,  ObjectVector4 gObj, CameraVector4 gCam)
     {
-	    var xDiff = a.X - b.X;
-        var yDiff = a.Y - b.Y;
+	    var xA = a.X;
+	    var xB = b.X;
+	    var xDiff = xA - xB;
+	    
+	    var yA = a.Y;
+	    var yB = b.Y;
+	    var yDiff = yA - yB;
 
-        var c = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W ) *( gCam.X * gCam.X + gCam.Z * gCam.Z)) / xDiff *
-                (gObj.U * (-_largeB.U * gCam.X +
-                                    _largeB.U * b.X * gCam.Z +
-                                    _largeA.U * (gCam.X - a.X * gCam.Z)) +
-                 gObj.V * (-_largeB.V * gCam.X +
-                                    _largeB.V * b.X * gCam.Z +
-                                    _largeA.V * (gCam.X - a.X * gCam.Z))) -
-                Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / yDiff *
-                (gObj.U * (-_largeB.U * gCam.Y +
-                                    _largeB.U * b.Y * gCam.Z +
-                                    _largeA.U * (gCam.Y - a.Y * gCam.Z)) +
-                 gObj.V * (-_largeB.V * gCam.Y +
-                                    _largeB.V * b.Y * gCam.Z +
-                                    _largeA.V * (gCam.Y - a.Y * gCam.Z)));
+        var c = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W ) * ( gCam.X * gCam.X + gCam.Z * gCam.Z)) / xDiff * (gObj.U * (-_largeB.U * gCam.X + _largeB.U * xB * gCam.Z + _largeA.U * (gCam.X - 
+		                xA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.X + _largeB.V * xB * gCam.Z + _largeA.V * (gCam.X - xA * gCam.Z))) -
+                Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / yDiff * (gObj.U * (-_largeB.U * gCam.Y + _largeB.U * yB * gCam.Z +
+		                _largeA.U * (gCam.Y - yA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.Y + _largeB.V * yB * gCam.Z + _largeA.V * (gCam.Y - yA * gCam.Z)));
 
         return c;
     }
