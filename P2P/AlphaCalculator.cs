@@ -74,15 +74,14 @@ public class AlphaCalculator
         var yB = b.Y;
         var yDiff = yA - yB;
 
-        //todo まちがっている
-        var returnValue = 1 / xDiff * (gObj.U * gObj.V * (-_largeA.U * (gCam.X * xA + gCam.Z) + _largeB.U * (gCam.X * yB + gCam.Z)) +
+        var returnValue = 1 / xDiff * (gObj.U * gObj.V * (-_largeA.U * (gCam.X * xA + gCam.Z) + _largeB.U * (gCam.X * _largeB.V + gCam.Z)) +
                              gObj.U * gObj.U * (_largeA.V * (gCam.X * xA + gCam.Z) - _largeB.V * (gCam.X * xB + gCam.Z) + gObj.W * gCam.Y * (_largeA.U * gCam.X - _largeB.U * gCam.X - 
-	                             _largeA.U * a.X * gCam.Z + _largeB.U * xB * gCam.Z)) + gObj.W * (_largeA.V * gObj.W * (gCam.X * xA+ gCam.Z) - 
+	                             _largeA.U * xA * gCam.Z + _largeB.U * xB * gCam.Z)) + gObj.W * (_largeA.V * gObj.W * (gCam.X * xA+ gCam.Z) - 
 	                             _largeB.V * gObj.W * (gCam.X * xB + gCam.Z) + (gObj.V * gObj.V + gObj.W * gObj.W) * gCam.Y * (-_largeB.U * gCam.X + _largeB.U * xB * gCam.Z + 
 		                             _largeA.U * (gCam.X - xA * gCam.Z)))) - 1 / yDiff * (gObj.U * gObj.V * gCam.X * (-_largeA.U * yA + _largeB.U * yB) +
                               gObj.U * gObj.U * (gCam.X * (_largeA.V * yA - _largeB.V * yB) + _largeB.U * gObj.W * (gCam.X * gCam.X + gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z) - 
-                                                 _largeA.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Y * a.Y * gCam.Z + gCam.Z * gCam.Z) + _largeB.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + 
-		                              gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z)));
+	                              _largeA.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * (gCam.Y * yA + gCam.Z)) + _largeB.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + 
+		                              gCam.Z * (gCam.Y * yB + gCam.Z))));
 
         return returnValue;
     }
