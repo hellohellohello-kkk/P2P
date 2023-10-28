@@ -10,7 +10,7 @@ public class AlphaCalculator
 
 	public AlphaCalculator(Vector3 markerACoordinateAtObjectReferenceFrame, Vector3 markerBCoordinateAtObjectReferenceFrame)
 	{ 
-		//TODO 整合性が取れるようにする
+		//TODO 謨ｴ蜷域ｧ縺悟叙繧後ｋ繧医≧縺ｫ縺吶ｋ
 		_largeA = new Marker(markerACoordinateAtObjectReferenceFrame);
 		_largeB = new Marker(markerBCoordinateAtObjectReferenceFrame);
 	}
@@ -52,7 +52,7 @@ public class AlphaCalculator
 		var yA = a.Y;
 		var yB = b.Y;
 		var yDiff = yA - yB;
-		
+		// 計算式が合っているか再度確認する
 		var returnValue = 1 / xDiff * ((gObj.U*gObj.U + gObj.V*gObj.V) * gCam.Y * (-_largeA.V * gCam.X + _largeB.V * gCam.X + _largeA.V * xA * gCam.Z - 
 			                               _largeB.V * xB * gCam.Z) + _largeA.U * (gObj.W * (gCam.X * xA + gCam.Z) + gObj.U * gObj.V * gCam.Y * (gCam.X - xA * gCam.Z)) -
 		                          _largeB.U * (gObj.W * (gCam.X * xB + gCam.Z) + gObj.U* gObj.V * gCam.Y * (gCam.X - xB * gCam.Z))) - 
