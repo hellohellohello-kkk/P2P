@@ -82,7 +82,7 @@ public class AlphaCalculator
 		                             _largeA.U * (gCam.X - xA * gCam.Z)))) - 1 / yDiff * (gObj.U * gObj.V * gCam.X * (-_largeA.U * yA + _largeB.U * yB) +
                               gObj.U * gObj.U * (gCam.X * (_largeA.V * yA - _largeB.V * yB) + _largeB.U * gObj.W * (gCam.X * gCam.X + gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z) - 
                                                  _largeA.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Y * a.Y * gCam.Z + gCam.Z * gCam.Z) + _largeB.U * (gObj.V * gObj.V + gObj.W * gObj.W) * (gCam.X * gCam.X + 
-	                                                 gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z)));
+		                              gCam.Y * yB * gCam.Z + gCam.Z * gCam.Z)));
 
         return returnValue;
     }
