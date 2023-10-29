@@ -106,6 +106,55 @@ public class AlphaCalculator
         return c;
     }
 
+    private double CalculateParameterAByHandCaluculation(ImagePlanePoint a, ImagePlanePoint b, ObjectVector4 gObj, CameraVector4 gCam)
+    {
+        var xA = a.X;
+        var xB = b.X;
+        var xDiff = xA - xB;
+
+        var yA = a.Y;
+        var yB = b.Y;
+        var yDiff = yA - yB;
+
+		var coefficientObj = Math.Sqrt(gObj.U * gObj.U + gObj.W * gObj.W);
+		var coeffieientCam = Math.Sqrt(gCam.X * gCam.X + gCam.Z * gCam.Z);
+
+        var firstCoefficient = coefficientObj * coeffieientCam / xDiff;
+        var secondCoefficient = coefficientObj * coeffieientCam / yDiff;
+
+        var difBAu = _largeB.U - _largeA.U;
+        var difBAv = _largeB.V - _largeA.V;
+        var difBAw = _largeB.W - _largeA.W;
+        var difxAxBu = xA * _largeA.U - xB * _largeB.U;
+        var difxAxBv = xA * _largeA.V - xB * _largeB.V;
+        var difxAxBw = xA * _largeA.W - xB * _largeB.W;
+        var difyAyBu = yA * _largeA.U - yB * _largeB.U;
+        var difyAyBv = yA * _largeA.V - yB * _largeB.V;
+        var difyAyBw = yA * _largeA.W - yB * _largeB.W;
+
+        var returnValue = firstCoefficient *
+                (
+                    (gCam.Z * gObj.W + gCam.X * gCam.Y * gObj.U * gObj.V) * difBAu +
+                    -gCam.X * gCam.Y * difBAv +
+                    (-gCam.Z * gObj.U + gCam.X * gCam.Y * gObj.V * gObj.W) * difBAw +
+                    (-gCam.X * gObj.W + gCam.Y * gCam.Z * gObj.U * gObj.V) * difxAxBu +
+                    -gCam.Y * gCam.Z * coefficientObj * coefficientObj * difxAxBv +
+                    (gCam.X * gObj.U + gCam.Y * gCam.Z * gObj.V * gObj.W) * difxAxBw
+                )
+                -
+                secondCoefficient *
+                (
+                    -coeffieientCam * coeffieientCam * gObj.U * gObj.V * difBAu +
+                    coeffieientCam * coeffieientCam * coefficientObj * coefficientObj * difBAv + 
+					-coeffieientCam * coeffieientCam * gObj.V * gObj.W * difBAw+
+                    (-gCam.X * gObj.W + gCam.Y * gCam.Z * gObj.U * gObj.V) * difyAyBu +
+                    -gCam.Y * gCam.Z * coefficientObj * coefficientObj * difyAyBv +
+                    (gCam.X * gObj.U + gCam.Y * gCam.Z * gObj.V * gObj.W) * difyAyBw
+                );
+
+        return returnValue;
+    }
+
     private double CalculateParameterCByHandCaluculation(ImagePlanePoint a, ImagePlanePoint b, ObjectVector4 gObj, CameraVector4 gCam)
     {
         var xA = a.X;
