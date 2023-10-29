@@ -52,7 +52,7 @@ public class AlphaCalculator
 		var yA = a.Y;
 		var yB = b.Y;
 		var yDiff = yA - yB;
-		// 計算式が合っているか再度確認する
+
 		var returnValue = 1 / xDiff * ((gObj.U*gObj.U + gObj.V*gObj.V) * gCam.Y * (-_largeA.V * gCam.X + _largeB.V * gCam.X + _largeA.V * xA * gCam.Z - 
 			                               _largeB.V * xB * gCam.Z) + _largeA.U * (gObj.W * (gCam.X * xA + gCam.Z) + gObj.U * gObj.V * gCam.Y * (gCam.X - xA * gCam.Z)) -
 		                          _largeB.U * (gObj.W * (gCam.X * xB + gCam.Z) + gObj.U* gObj.V * gCam.Y * (gCam.X - xB * gCam.Z))) - 
@@ -103,6 +103,45 @@ public class AlphaCalculator
 	            secondCoefficient * (gObj.U * (-_largeB.U * gCam.Y + _largeB.U * yB * gCam.Z + 
 	                _largeA.U * (gCam.Y - yA * gCam.Z)) + gObj.V * (-_largeB.V * gCam.Y + _largeB.V * yB * gCam.Z + _largeA.V * (gCam.Y - yA * gCam.Z)));
 
+        return c;
+    }
+
+    private double CalculateParameterCByHandCaluculation(ImagePlanePoint a, ImagePlanePoint b, ObjectVector4 gObj, CameraVector4 gCam)
+    {
+        var xA = a.X;
+        var xB = b.X;
+        var xDiff = xA - xB;
+
+        var yA = a.Y;
+        var yB = b.Y;
+        var yDiff = yA - yB;
+
+        var firstCoefficient = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / xDiff;
+        var secondCoefficient = Math.Sqrt((gObj.U * gObj.U + gObj.W * gObj.W) * (gCam.X * gCam.X + gCam.Z * gCam.Z)) / yDiff;
+
+		var difBAu = _largeB.U - _largeA.U;
+        var difBAv = _largeB.V - _largeA.V;
+		var difBAw = _largeB.W - _largeA.W;
+		var difxAxBu = xA * _largeA.U - xB * _largeB.U;
+        var difxAxBv = xA * _largeA.V - xB * _largeB.V;
+        var difxAxBw = xA * _largeA.W - xB * _largeB.W;
+        var difyAyBu = yA * _largeA.U - yB * _largeB.U;
+        var difyAyBv = yA * _largeA.V - yB * _largeB.V;
+        var difyAyBw = yA * _largeA.W - yB * _largeB.W;
+
+
+		var c = firstCoefficient *
+				(
+					gCam.X * (gObj.U * difBAu + gObj.V * difBAv + gObj.W * difBAw) +
+					gCam.Z * (gObj.U * difxAxBu + gObj.V * difxAxBv + gObj.W * difxAxBw)
+				)
+				-
+				secondCoefficient *
+				(
+                    gCam.Y * (gObj.U * difBAu + gObj.V * difBAv + gObj.W * difBAw) +
+                    gCam.Z * (gObj.U * difyAyBu + gObj.V * difyAyBv + gObj.W * difyAyBw)
+                );
+		
         return c;
     }
 
