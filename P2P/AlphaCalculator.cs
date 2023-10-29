@@ -25,13 +25,13 @@ public class AlphaCalculator
 
     public double CalculateAlpha(Vector2 xTildaA, Vector2 xTildaB, Vector4 gravityObject, Vector4 gravityCamera)
     {
-	   var aInImagePlane = new ImagePlanePoint(xTildaA);
-	   var bInImagePlane = new ImagePlanePoint(xTildaB);
+		var aInImagePlane = new ImagePlanePoint(xTildaA);
+		var bInImagePlane = new ImagePlanePoint(xTildaB);
 
-	   var gObj = new ObjectVector4(gravityObject);
-	   var gCam = new CameraVector4(gravityCamera);
+		var gObj = new ObjectVector4(gravityObject);
+		var gCam = new CameraVector4(gravityCamera);
 
-	   var a = CalculateParameterA(aInImagePlane, bInImagePlane, gObj, gCam);
+		var a = CalculateParameterA(aInImagePlane, bInImagePlane, gObj, gCam);
 		var b = CalculateParameterB(aInImagePlane, bInImagePlane, gObj, gCam);
 		var c = CalculateParameterC(aInImagePlane, bInImagePlane, gObj, gCam);
 
@@ -40,6 +40,26 @@ public class AlphaCalculator
 		
 		var alpha = Math.Acos(-c / m) + beta;
 
+		return alpha;
+	}
+
+    public double[] CalculateAlphaByHandCalculation(Vector2 xTildaA, Vector2 xTildaB, Vector4 gravityObject, Vector4 gravityCamera)
+    {
+		var aInImagePlane = new ImagePlanePoint(xTildaA);
+		var bInImagePlane = new ImagePlanePoint(xTildaB);
+
+		var gObj = new ObjectVector4(gravityObject);
+		var gCam = new CameraVector4(gravityCamera);
+
+		var a = CalculateParameterAByHandCaluculation(aInImagePlane, bInImagePlane, gObj, gCam);
+		var b = CalculateParameterBByHandCaluculation(aInImagePlane, bInImagePlane, gObj, gCam);
+		var c = CalculateParameterCByHandCaluculation(aInImagePlane, bInImagePlane, gObj, gCam);
+
+		var beta = Math.Atan2(a , b);
+		var m = Math.Sqrt(a * a + b * b);
+
+        var alpha = new double[] { Math.Acos(-c / m) + beta, -Math.Acos(-c / m) + beta };
+        
 		return alpha;
 	}
 

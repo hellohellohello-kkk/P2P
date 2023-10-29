@@ -27,7 +27,7 @@ public class AlphaCalculatorTest
 
         //正解となる外部Pを設定(回転)
         var expectedMatrix = Matrix4x4.CreateRotationX(MathF.PI/4);
-        
+
         //オブジェクト
         var objectAInObjectReferenceFrame = new Vector4(100, 100, 0, 1);
         var objectBInObjectReferenceFrame = new Vector4(-100, -100, 0, 1);
@@ -53,24 +53,37 @@ public class AlphaCalculatorTest
 
         var calculator = new AlphaCalculator(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame);
 
-        var alpha = calculator.CalculateAlpha(projectedImagePositionA, projectedImagePositionB, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame);
+        var alpha = calculator.CalculateAlphaByHandCalculation(projectedImagePositionA, projectedImagePositionB, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame);
 
-        var alphaDegree = Angle.CreateFromDegree(alpha * 180.0 / Math.PI);
+        var alpha1Degree = Angle.CreateFromDegree(alpha[0] * 180.0 / Math.PI);
+        var alpha2Degree = Angle.CreateFromDegree(alpha[1] * 180.0 / Math.PI);
 
-        Console.WriteLine(alphaDegree.Degree);
+        Console.WriteLine("alpha1 : " + alpha1Degree.Degree);
+        Console.WriteLine("alpha2 : " + alpha2Degree.Degree);
 
+        var actualMatrix1 = calculateMatrix(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha1Degree);
+        var actualMatrix2 = calculateMatrix(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha2Degree);
+
+        Console.WriteLine(actualMatrix1);
+        Console.WriteLine(actualMatrix2);
+        Console.WriteLine(expectedMatrix);
+        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix, actualMatrix1);
+        Assert.IsTrue(comparisonResult1.AreEqual);
+        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix, actualMatrix2);
+        Assert.IsTrue(comparisonResult2.AreEqual);
+
+    }
+
+    private static Matrix4x4 calculateMatrix(Vector4 objectAInObjectReferenceFrame, Vector4 objectBInObjectReferenceFrame, Vector4 gravityVectorInObjectReferenceFrame, Vector4 gravityVectorInCameraReferenceFrame, Vector2 projectedImagePositionA, Vector2 projectedImagePositionB, Angle alpha1Degree)
+    {
         var rotationMatrixCalculator = new RotationMatrixCalculator();
-        var matrix1 = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alphaDegree, gravityVectorInObjectReferenceFrame);
+        var matrix1 = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alpha1Degree, gravityVectorInObjectReferenceFrame);
         var matrix2 = rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(gravityVectorInCameraReferenceFrame);
         var actualMatrix = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(matrix2, matrix1);
-
-        Console.WriteLine(actualMatrix);
-        Console.WriteLine(expectedMatrix);
-        var comparisonResult = new CompareLogic(){Config = new ComparisonConfig(){DoublePrecision = 0.001}}.Compare(expectedMatrix, actualMatrix);
-        Assert.IsTrue(comparisonResult.AreEqual);
-
-
         var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, actualMatrix);
-        Console.WriteLine(translation.X +","+translation.Y+","+translation.Z );
+        actualMatrix.M41 = translation.X;
+        actualMatrix.M42 = translation.Y;
+        actualMatrix.M43 = translation.Z;
+        return actualMatrix;
     }
 }
