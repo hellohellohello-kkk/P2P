@@ -155,7 +155,7 @@ public class AlphaCalculator
         var returnValue = firstCoefficient *
                 (
                     (gCam.Z * gObj.W + gCam.X * gCam.Y * gObj.U * gObj.V) * difBAu +
-                    -gCam.X * gCam.Y * difBAv +
+                    -gCam.X * gCam.Y * coefficientObj * coefficientObj * difBAv +
                     (-gCam.Z * gObj.U + gCam.X * gCam.Y * gObj.V * gObj.W) * difBAw +
                     (-gCam.X * gObj.W + gCam.Y * gCam.Z * gObj.U * gObj.V) * difxAxBu +
                     -gCam.Y * gCam.Z * coefficientObj * coefficientObj * difxAxBv +
