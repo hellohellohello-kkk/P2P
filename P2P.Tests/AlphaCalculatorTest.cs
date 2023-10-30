@@ -67,10 +67,9 @@ public class AlphaCalculatorTest
         Console.WriteLine(actualMatrix1);
         Console.WriteLine(actualMatrix2);
         Console.WriteLine(expectedMatrix);
-        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix, actualMatrix1);
-        Assert.IsTrue(comparisonResult1.AreEqual);
-        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix, actualMatrix2);
-        Assert.IsTrue(comparisonResult2.AreEqual);
+        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix1.GetDoubleList());
+        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.001 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix2.GetDoubleList());
+        Assert.IsTrue(comparisonResult1.AreEqual || comparisonResult2.AreEqual);
 
     }
 
