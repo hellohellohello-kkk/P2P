@@ -26,18 +26,20 @@ public class AlphaCalculatorTest
         var imageCenter = new Vector2(1024, 1024);
 
         //正解となる外部Pを設定(回転)
-        var expectedMatrix = Matrix4x4.CreateRotationX(MathF.PI/4);
+        var expectedMatrix = Matrix4x4.CreateRotationZ(MathF.PI/4);
 
         //オブジェクト
-        var objectAInObjectReferenceFrame = new Vector4(100, 100, 0, 1);
+        var objectAInObjectReferenceFrame = new Vector4(100, 30, 30, 1);
         var objectBInObjectReferenceFrame = new Vector4(-100, -100, 0, 1);
 
         //重力方向
         var gravityVectorInObjectReferenceFrame = new Vector4(0, 0, 1, 1);
         var gravityVectorInCameraReferenceFrame = Vector4.Transform(gravityVectorInObjectReferenceFrame, Matrix4x4.Transpose(expectedMatrix));
-
+    
+        Console.WriteLine(gravityVectorInCameraReferenceFrame.ToString());
+        
         //正解となる外部Pを設定（並進）
-        expectedMatrix.M41 = 0;
+        expectedMatrix.M41 = 30;
         expectedMatrix.M42 = 0;
         expectedMatrix.M43 = 5000;
 
@@ -50,6 +52,8 @@ public class AlphaCalculatorTest
         var projectedImagePositionA = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionA);
         var projectedImagePositionB = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionB);
 
+        Console.WriteLine(projectedImagePositionA.X + "," + projectedImagePositionA.Y);
+        Console.WriteLine(projectedImagePositionB.X + "," + projectedImagePositionB.Y);
 
         var calculator = new AlphaCalculator(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame);
 
