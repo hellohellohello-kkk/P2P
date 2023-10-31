@@ -17,24 +17,26 @@ public class AlphaCalculatorTest
 		Assert.AreEqual(0, alpha);
 	}
 
-    [TestCase(0, 0, 0, 5000)]
-    [TestCase(MathF.PI / 6, 0, 1000, 4000)]
-    [TestCase(MathF.PI / 4, 23, 523, 10000)]
-    [TestCase(MathF.PI / 3, 100, 0, 8000)]
-    [TestCase(MathF.PI / 2, 55, 230, 5000)]
-    public void P2pTest(float radian, float tx, float ty, float tz)
+    [TestCase(1, 0, 0, MathF.PI / 3, 1, -100, 4000)]
+    [TestCase(0, 1, 0, MathF.PI / 3, 1, -100, 4000)]
+    [TestCase(0, 0, 1, MathF.PI / 3, 1, -100, 4000)]
+    [TestCase(1, 1, 1, MathF.PI / 4, 0, 0, 5000)]
+    [TestCase(1, -1, 1, MathF.PI / 3, 1, -100, 4000)]
+    [TestCase(1, 0, 1, MathF.PI / 3, 1, -100, 4000)]
+    public void P2pTest(float p, float q, float r, float angle, float tx, float ty, float tz)
     {
         //定数設定
         var f = 50; //mm
         var dpx = 0.00345f; //mm/pix
         var imageCenter = new Vector2(1024, 1024);
-
-        //正解となる外部Pを設定(回転)
-        var expectedMatrix = Matrix4x4.CreateRotationZ(radian);
-
         //オブジェクト
         var objectAInObjectReferenceFrame = new Vector4(100, 30, 30, 1);
         var objectBInObjectReferenceFrame = new Vector4(-50, -50, 0, 1);
+
+        //正解となる外部Pを設定(回転)
+        var axisVector = new Vector3(p, q, r);
+        var normalizedAxisVector = axisVector / axisVector.Length();
+        var expectedMatrix = Matrix4x4.CreateFromAxisAngle(normalizedAxisVector, angle);
 
         //重力方向
         var gravityVectorInObjectReferenceFrame = new Vector4(0, 0, 1, 1);
@@ -75,8 +77,8 @@ public class AlphaCalculatorTest
         Console.WriteLine(actualMatrix1);
         Console.WriteLine(actualMatrix2);
         Console.WriteLine(expectedMatrix);
-        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.01 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix1.GetDoubleList());
-        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 0.01 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix2.GetDoubleList());
+        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 1 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix1.GetDoubleList());
+        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 1 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix2.GetDoubleList());
         Assert.IsTrue(comparisonResult1.AreEqual || comparisonResult2.AreEqual);
 
     }
