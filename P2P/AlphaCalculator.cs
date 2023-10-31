@@ -23,7 +23,7 @@ public class AlphaCalculator
 		    markerBCoordinateAtObjectReferenceFrame.Y, markerBCoordinateAtObjectReferenceFrame.Z));
     }
 
-    public double CalculateAlpha(Vector2 xTildaA, Vector2 xTildaB, Vector4 gravityObject, Vector4 gravityCamera)
+    public double[] CalculateAlpha(Vector2 xTildaA, Vector2 xTildaB, Vector4 gravityObject, Vector4 gravityCamera)
     {
 		var aInImagePlane = new ImagePlanePoint(xTildaA);
 		var bInImagePlane = new ImagePlanePoint(xTildaB);
@@ -37,10 +37,10 @@ public class AlphaCalculator
 
 		var beta = Math.Atan2(a, b);
 		var m = Math.Sqrt(a * a + b * b);
-		
-		var alpha = Math.Acos(-c / m) + beta;
 
-		return alpha;
+        var alpha = new double[] { Math.Acos(-c / m) + beta, -Math.Acos(-c / m) + beta };
+
+        return alpha;
 	}
 
     public double[] CalculateAlphaByHandCalculation(Vector2 xTildaA, Vector2 xTildaB, Vector4 gravityObject, Vector4 gravityCamera)
