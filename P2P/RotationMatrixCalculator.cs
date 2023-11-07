@@ -57,9 +57,9 @@ public class RotationMatrixCalculator
         var rotationMatrixCalculator = new RotationMatrixCalculator();
         var rotationMatrixRefToObject = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alpha1Degree, gravityVectorInObjectReferenceFrame);
         var rotationMatrizRefToCamera = rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(gravityVectorInCameraReferenceFrame);
-        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, externalParameter);
-
         var externalParameter = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(rotationMatrizRefToCamera, rotationMatrixRefToObject);
+
+        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, externalParameter);
         externalParameter.M41 = translation.X;
         externalParameter.M42 = translation.Y;
         externalParameter.M43 = translation.Z;
