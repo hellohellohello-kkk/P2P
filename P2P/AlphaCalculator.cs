@@ -306,8 +306,13 @@ public class AlphaCalculator
 	    {
 		    _value = value;
 	    }
-	    
-	    public float U => _value.X;
+
+        public Marker(Vector4 value)
+        {
+            _value = new Vector3(value.X, value.Y, value.Z);
+        }
+
+        public float U => _value.X;
 	    public float V => _value.Y;
 	    public float W => _value.Z;
     }
