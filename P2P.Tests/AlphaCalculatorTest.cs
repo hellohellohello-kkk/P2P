@@ -71,8 +71,8 @@ public class AlphaCalculatorTest
         Console.WriteLine("alpha1 : " + alpha1Degree.Degree);
         Console.WriteLine("alpha2 : " + alpha2Degree.Degree);
 
-        var actualMatrix1 = calculateMatrix(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha1Degree);
-        var actualMatrix2 = calculateMatrix(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha2Degree);
+        var actualMatrix1 = RotationMatrixCalculator.calculateExternalParameter(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha1Degree);
+        var actualMatrix2 = RotationMatrixCalculator.calculateExternalParameter(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha2Degree);
 
         Console.WriteLine(actualMatrix1);
         Console.WriteLine(actualMatrix2);
@@ -83,16 +83,5 @@ public class AlphaCalculatorTest
 
     }
 
-    private static Matrix4x4 calculateMatrix(Vector4 objectAInObjectReferenceFrame, Vector4 objectBInObjectReferenceFrame, Vector4 gravityVectorInObjectReferenceFrame, Vector4 gravityVectorInCameraReferenceFrame, Vector2 projectedImagePositionA, Vector2 projectedImagePositionB, Angle alpha1Degree)
-    {
-        var rotationMatrixCalculator = new RotationMatrixCalculator();
-        var matrix1 = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alpha1Degree, gravityVectorInObjectReferenceFrame);
-        var matrix2 = rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(gravityVectorInCameraReferenceFrame);
-        var actualMatrix = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(matrix2, matrix1);
-        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, actualMatrix);
-        actualMatrix.M41 = translation.X;
-        actualMatrix.M42 = translation.Y;
-        actualMatrix.M43 = translation.Z;
-        return actualMatrix;
-    }
+    
 }

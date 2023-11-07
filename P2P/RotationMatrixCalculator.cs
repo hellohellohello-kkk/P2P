@@ -51,4 +51,20 @@ public class RotationMatrixCalculator
 	{
 		return FloatMath.Sqrt(gravity.X*gravity.X+ gravity.Z*gravity.Z);
 	}
+
+    public static Matrix4x4 calculateExternalParameter(Vector4 objectAInObjectReferenceFrame, Vector4 objectBInObjectReferenceFrame, Vector4 gravityVectorInObjectReferenceFrame, Vector4 gravityVectorInCameraReferenceFrame, Vector2 projectedImagePositionA, Vector2 projectedImagePositionB, Angle alpha1Degree)
+    {
+        var rotationMatrixCalculator = new RotationMatrixCalculator();
+        var rotationMatrixRefToObject = rotationMatrixCalculator.GetRotationMatrixCertainRefToObjectReferenceFrame(alpha1Degree, gravityVectorInObjectReferenceFrame);
+        var rotationMatrizRefToCamera = rotationMatrixCalculator.GetRotationMatrixCertainRefToCameraReferenceFrame(gravityVectorInCameraReferenceFrame);
+        var translation = TranslationVectorCalculator.GetTranslationVector(projectedImagePositionA, projectedImagePositionB, objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, externalParameter);
+
+        var externalParameter = rotationMatrixCalculator.GetRotationObjectReferenceFrameToCameraReferenceFrame(rotationMatrizRefToCamera, rotationMatrixRefToObject);
+        externalParameter.M41 = translation.X;
+        externalParameter.M42 = translation.Y;
+        externalParameter.M43 = translation.Z;
+
+        return externalParameter;
+    }
+
 }
