@@ -25,7 +25,7 @@ public class AlphaSelector
         _projectedC = markerProjectedPosition[2];
     }
 
-    public static Angle SelectBetterAlpha(Angle[] alphaList, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
+    public Angle SelectBetterAlpha(Angle[] alphaList, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
     {
         double error1 = CalculateProjectionError(alphaList[0], gravityVectorInObjectFrame, gravityVectorInCameraframe);
         double error2 = CalculateProjectionError(alphaList[1], gravityVectorInObjectFrame, gravityVectorInCameraframe);
@@ -38,7 +38,7 @@ public class AlphaSelector
     }
 
 
-    private static double CalculateProjectionError(Angle alpha, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
+    private double CalculateProjectionError(Angle alpha, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
     {
         var markerA = ToVector4(_largeA);
         var markerB = ToVector4(_largeB);
@@ -61,7 +61,7 @@ public class AlphaSelector
 
     public static Vector2 CalculateProjectedCoordinate(Matrix4x4 externalParameter, Vector4 marker)
     {
-        var markerInCameraFrame = Vector4.Transform(marker, Matrix4x4.Transpose(externalParameter));
+        var markerInCameraFrame = Vector4.Transform(marker, externalParameter);
 
         var projecedPositon = new Vector2(markerInCameraFrame.X / markerInCameraFrame.Z, markerInCameraFrame.Y / markerInCameraFrame.Z);
 
