@@ -14,7 +14,7 @@ public class AlphaSelector
     private readonly Vector2 _projectedB;
     private readonly Vector2 _projectedC;
 
-    public AlphaSelector(Vector3[] markersInObjectFrame, Vector2[] markerProjectedPosition)
+    public AlphaSelector(Vector4[] markersInObjectFrame, Vector2[] markerProjectedPosition)
     {
         _largeA = new Marker(markersInObjectFrame[0]);
         _largeB = new Marker(markersInObjectFrame[1]);
@@ -25,7 +25,7 @@ public class AlphaSelector
         _projectedC = markerProjectedPosition[2];
     }
 
-    public Angle SelectBetterAlpha(Angle[] alphaList, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
+    public static Angle SelectBetterAlpha(Angle[] alphaList, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
     {
         double error1 = CalculateProjectionError(alphaList[0], gravityVectorInObjectFrame, gravityVectorInCameraframe);
         double error2 = CalculateProjectionError(alphaList[1], gravityVectorInObjectFrame, gravityVectorInCameraframe);
@@ -38,7 +38,7 @@ public class AlphaSelector
     }
 
 
-    private double CalculateProjectionError(Angle alpha, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
+    private static double CalculateProjectionError(Angle alpha, Vector4 gravityVectorInObjectFrame, Vector4 gravityVectorInCameraframe)
     {
         var markerA = ToVector4(_largeA);
         var markerB = ToVector4(_largeB);

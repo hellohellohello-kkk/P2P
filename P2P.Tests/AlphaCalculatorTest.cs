@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
 using KellermanSoftware.CompareNetObjects;
+using static P2P.AlphaCalculator;
 
 namespace P2P.Tests;
 
@@ -32,6 +33,7 @@ public class AlphaCalculatorTest
         //オブジェクト
         var objectAInObjectReferenceFrame = new Vector4(100, 30, 30, 1);
         var objectBInObjectReferenceFrame = new Vector4(-50, -50, 0, 1);
+        var objectCInObjectReferenceFrame = new Vector4(-50, 50, 0, 1);
 
         //正解となる外部Pを設定(回転)
         var axisVector = new Vector3(p, q, r);
@@ -51,12 +53,15 @@ public class AlphaCalculatorTest
 
         var objectA = Vector4.Transform(objectAInObjectReferenceFrame, expectedMatrix);
         var objectB = Vector4.Transform(objectBInObjectReferenceFrame, expectedMatrix);
+        var objectC = Vector4.Transform(objectCInObjectReferenceFrame, expectedMatrix);
 
         var imagePositionA = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectA);
         var imagePositionB = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectB);
+        var imagePositionC = ImageCalculator.CalculateImageCoordinates(f, dpx, imageCenter, objectC);
 
         var projectedImagePositionA = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionA);
         var projectedImagePositionB = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionB);
+        var projectedImagePositionC = ImageCalculator.CalculateProjectionalCoordinates(f, dpx, imageCenter, imagePositionC);
 
         Console.WriteLine(projectedImagePositionA.X + "," + projectedImagePositionA.Y);
         Console.WriteLine(projectedImagePositionB.X + "," + projectedImagePositionB.Y);
@@ -67,19 +72,20 @@ public class AlphaCalculatorTest
 
         var alpha1Degree = Angle.CreateFromDegree(alpha[0] * 180.0 / Math.PI);
         var alpha2Degree = Angle.CreateFromDegree(alpha[1] * 180.0 / Math.PI);
+        var alphaList = new Angle[]{ alpha1Degree, alpha2Degree};
 
         Console.WriteLine("alpha1 : " + alpha1Degree.Degree);
         Console.WriteLine("alpha2 : " + alpha2Degree.Degree);
 
-        var actualMatrix1 = RotationMatrixCalculator.calculateExternalParameter(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha1Degree);
-        var actualMatrix2 = RotationMatrixCalculator.calculateExternalParameter(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, alpha2Degree);
+        var alphaSelector = new AlphaSelector(new Vector4[] { objectA, objectB, objectC }, new Vector2[] { projectedImagePositionA, projectedImagePositionB, projectedImagePositionC });
+        var betterAlpha = alphaSelector.SelectBetterAlpha(alphaList, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame);
 
-        Console.WriteLine(actualMatrix1);
-        Console.WriteLine(actualMatrix2);
+        var actualMatrix = RotationMatrixCalculator.calculateExternalParameter(objectAInObjectReferenceFrame, objectBInObjectReferenceFrame, gravityVectorInObjectReferenceFrame, gravityVectorInCameraReferenceFrame, projectedImagePositionA, projectedImagePositionB, betterAlpha);
+        
+        Console.WriteLine(actualMatrix);
         Console.WriteLine(expectedMatrix);
-        var comparisonResult1 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 1 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix1.GetDoubleList());
-        var comparisonResult2 = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 1 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix2.GetDoubleList());
-        Assert.IsTrue(comparisonResult1.AreEqual || comparisonResult2.AreEqual);
+        var comparisonResult = new CompareLogic() { Config = new ComparisonConfig() { DoublePrecision = 1 } }.Compare(expectedMatrix.GetDoubleList(), actualMatrix.GetDoubleList());
+        Assert.IsTrue(comparisonResult.AreEqual);
 
     }
 
