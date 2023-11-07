@@ -59,10 +59,13 @@ public class AlphaSelector
         return Math.Sqrt(errorX*errorX + errorY*errorY);
     }
 
-    public Vector2 CalculateProjectedCoordinate(Matrix4x4 externalParameter, Vector4 marker)
+    public static Vector2 CalculateProjectedCoordinate(Matrix4x4 externalParameter, Vector4 marker)
     {
-        //射影座標を計算(カメラの内部Pも必要か）
-        return Vector2.Zero;
+        var markerInCameraFrame = Vector4.Transform(marker, Matrix4x4.Transpose(externalParameter));
+
+        var projecedPositon = new Vector2(markerInCameraFrame.X / markerInCameraFrame.Z, markerInCameraFrame.Y / markerInCameraFrame.Z);
+
+        return projecedPositon;
     }
 
 
